@@ -1,13 +1,23 @@
 package pro.jredis.dict;
 
+/**
+ * 基于Hash实现的字典集合<br/>
+ * 定义了数据的组织方式，支持使用方指定Hash算法。
+ * @author YalikWang
+ *
+ * @param <K>
+ * @param <V>
+ */
 public class HashDict<K,V> implements Dict<K,V> {
-	private int loadFactor;
-	private int entrySize;
 	private HashDictEntry<K,V>[] entrys;
 	private HashAlgorithm<K> hashAlgorithm;
-	
-	public HashDict() {
+	@SuppressWarnings("unchecked")
+	public HashDict(HashAlgorithm<K> hashAlgorithm) {
 		entrys = new HashDictEntry[10];
+		this.hashAlgorithm = hashAlgorithm;
+	}
+	public HashDict() {
+		this(new DefaultHashAlgorithm<>());
 	}
 	@Override
 	public void put(K key, V value) {
@@ -46,14 +56,10 @@ public class HashDict<K,V> implements Dict<K,V> {
 		
 	}
 	public int getEntrySize() {
-		return entrySize;
-	}
-	public void setEntrySize(int entrySize) {
-		this.entrySize = entrySize;
+		return entrys.length;
 	}
 	@Override
 	public boolean exists(K key) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 	
